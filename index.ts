@@ -1,8 +1,22 @@
+const loader = document.querySelector('.loader')
+let photosArr = []
+let ready = false
+let imagesLoaded = 0
+let totalImages = 0
+
 // unsplash api
 const count = 10
 const apiKey = 'ythl0-0COk3ksSbbv_3LplfcLHlQ7bqqJXxAa63QeKM'
 const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`
 const proxyUrl = 'https://whispering-tor-04671.herokuapp.com/'
+
+const imageLoaded = () => {
+  imagesLoaded++
+
+  if (imagesLoaded === totalImages) {
+    ready = true
+  }
+}
 
 // Display photos
 type addNodesWithPhotosT = (photos: dataT) => void
@@ -13,6 +27,9 @@ const addElementsWithPhotos: addNodesWithPhotosT = (photos) => {
       elem.setAttribute(key, attributes[key])
     }
   }
+
+  photosArr = [...photosArr, ...photos]
+  totalImages = photosArr.length
 
   const imgContainer = document.querySelector('.img-container')
 
@@ -28,6 +45,7 @@ const addElementsWithPhotos: addNodesWithPhotosT = (photos) => {
       src: photo.urls.regular,
       alt: photo.alt_description,
     })
+    img.addEventListener('load', imageLoaded)
 
     link.appendChild(img)
     imgContainer.appendChild(link)
@@ -40,13 +58,11 @@ type photoT = {
   [key: string]: photoT & string
 }
 
-
 type dataT = photoT[]
 const  getPhotos = async () => {
   try {
     const response = await fetch(proxyUrl + apiUrl)
     const data: dataT = await response.json()
-    console.log(data);
     addElementsWithPhotos(data)
   }
   catch (e) {
@@ -55,3 +71,11 @@ const  getPhotos = async () => {
 }
 
 getPhotos()
+
+// onscroll
+window.addEventListener('scroll', () => {
+  if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 && ready) {
+    ready = false
+    getPhotos()
+  }
+})

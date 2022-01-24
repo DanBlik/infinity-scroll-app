@@ -34,18 +34,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var _this = this;
+var loader = document.querySelector('.loader');
+var photosArr = [];
+var ready = false;
+var imagesLoaded = 0;
+var totalImages = 0;
 // unsplash api
 var count = 10;
 var apiKey = 'ythl0-0COk3ksSbbv_3LplfcLHlQ7bqqJXxAa63QeKM';
 var apiUrl = "https://api.unsplash.com/photos/random/?client_id=".concat(apiKey, "&count=").concat(count);
 var proxyUrl = 'https://whispering-tor-04671.herokuapp.com/';
+var imageLoaded = function () {
+    imagesLoaded++;
+    if (imagesLoaded === totalImages) {
+        ready = true;
+    }
+};
 var addElementsWithPhotos = function (photos) {
     var setAttributes = function (elem, attributes) {
         for (var key in attributes) {
             elem.setAttribute(key, attributes[key]);
         }
     };
+    photosArr = __spreadArray(__spreadArray([], photosArr, true), photos, true);
+    totalImages = photosArr.length;
     var imgContainer = document.querySelector('.img-container');
     photos.forEach(function (photo) {
         var link = document.createElement('a');
@@ -58,6 +80,7 @@ var addElementsWithPhotos = function (photos) {
             src: photo.urls.regular,
             alt: photo.alt_description
         });
+        img.addEventListener('load', imageLoaded);
         link.appendChild(img);
         imgContainer.appendChild(link);
     });
@@ -85,3 +108,11 @@ var getPhotos = function () { return __awaiter(_this, void 0, void 0, function (
     });
 }); };
 getPhotos();
+// onscroll
+window.addEventListener('scroll', function () {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 && ready) {
+        ready = false;
+        getPhotos();
+        console.log('Load more');
+    }
+});
