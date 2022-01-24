@@ -1,4 +1,4 @@
-const loader = document.querySelector('.loader')
+const loader: HTMLElement = document.querySelector('.loader')
 let photosArr = []
 let ready = false
 let imagesLoaded = 0
@@ -15,6 +15,7 @@ const imageLoaded = () => {
 
   if (imagesLoaded === totalImages) {
     ready = true
+    loader.hidden = true
   }
 }
 

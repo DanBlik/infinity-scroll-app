@@ -58,6 +58,7 @@ var imageLoaded = function () {
     imagesLoaded++;
     if (imagesLoaded === totalImages) {
         ready = true;
+        loader.hidden = true;
     }
 };
 var addElementsWithPhotos = function (photos) {
@@ -97,7 +98,6 @@ var getPhotos = function () { return __awaiter(_this, void 0, void 0, function (
                 return [4 /*yield*/, response.json()];
             case 2:
                 data = _a.sent();
-                console.log(data);
                 addElementsWithPhotos(data);
                 return [3 /*break*/, 4];
             case 3:
@@ -113,6 +113,5 @@ window.addEventListener('scroll', function () {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 && ready) {
         ready = false;
         getPhotos();
-        console.log('Load more');
     }
 });
