@@ -1,7 +1,8 @@
 // unsplash api
-const count: number = 10
-const apiKey: string = 'ythl0-0COk3ksSbbv_3LplfcLHlQ7bqqJXxAa63QeKM'
-const apiUrl: string = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`
+const count = 10
+const apiKey = 'ythl0-0COk3ksSbbv_3LplfcLHlQ7bqqJXxAa63QeKM'
+const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`
+const proxyUrl = 'https://whispering-tor-04671.herokuapp.com/'
 
 // Display photos
 type addNodesWithPhotosT = (photos: dataT) => void
@@ -43,7 +44,7 @@ type photoT = {
 type dataT = photoT[]
 const  getPhotos = async () => {
   try {
-    const response = await fetch(apiUrl)
+    const response = await fetch(proxyUrl + apiUrl)
     const data: dataT = await response.json()
     console.log(data);
     addElementsWithPhotos(data)

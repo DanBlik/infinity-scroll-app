@@ -39,6 +39,7 @@ var _this = this;
 var count = 10;
 var apiKey = 'ythl0-0COk3ksSbbv_3LplfcLHlQ7bqqJXxAa63QeKM';
 var apiUrl = "https://api.unsplash.com/photos/random/?client_id=".concat(apiKey, "&count=").concat(count);
+var proxyUrl = 'https://whispering-tor-04671.herokuapp.com/';
 var addElementsWithPhotos = function (photos) {
     var setAttributes = function (elem, attributes) {
         for (var key in attributes) {
@@ -67,7 +68,7 @@ var getPhotos = function () { return __awaiter(_this, void 0, void 0, function (
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 3, , 4]);
-                return [4 /*yield*/, fetch(apiUrl)];
+                return [4 /*yield*/, fetch(proxyUrl + apiUrl)];
             case 1:
                 response = _a.sent();
                 return [4 /*yield*/, response.json()];
